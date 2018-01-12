@@ -1,0 +1,52 @@
+[mmorales@localhost]$ ps -ef | grep mmorales | grep ssh-agent | grep -v grep
+mmorales  1887     1  0  2017 ?        00:00:00 ssh-agent
+mmorales  2179     1  0  2017 ?        00:00:00 ssh-agent
+mmorales  2459     1  0  2017 ?        00:00:00 ssh-agent
+mmorales  2499     1  0  2017 ?        00:00:00 ssh-agent
+mmorales  2849     1  0 Jan03 ?        00:00:00 ssh-agent
+mmorales  8651     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 10763     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 10782     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 16545     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 16719     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 16950     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 19040     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 20216     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 20969     1  0 Jan02 ?        00:00:00 ssh-agent
+mmorales 22599     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 24591     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 25368     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 27580     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 27584     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 28198     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 29818     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 31195     1  0  2017 ?        00:00:00 ssh-agent
+mmorales 32295     1  0  2017 ?        00:00:00 ssh-agent
+[mmorales@localhost]$ ps -ef | grep mmorales | grep ssh-agent | grep -v grep | awk '{print $2}'
+1887
+2179
+2459
+2499
+2849
+8651
+10763
+10782
+16545
+16719
+16950
+19040
+20216
+20969
+22599
+24591
+25368
+27580
+27584
+28198
+29818
+31195
+32295
+[mmorales@localhost]$ for i in $(ps -ef | grep mmorales | grep ssh-agent | grep -v grep | awk '{print $2}'); do kill $i; done
+[mmorales@localhost]$ 
+[mmorales@localhost]$  ps -ef | grep mmorales | grep ssh-agent | grep -v grep | awk '{print $2}'
+[mmorales@localhost]$ 
