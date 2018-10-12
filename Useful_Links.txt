@@ -1,0 +1,13 @@
+Generate SSH Key Pair
+https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
+or https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
+or https://confluence.atlassian.com/bitbucketserver/creating-ssh-keys-776639788.html
+
+Harden SSH
+https://medium.com/@jasonrigden/hardening-ssh-1bcb99cd4cef
+
+Setup MFA for SSH
+https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-16-04
+
+Using SSL Certificates with HAProxy
+https://serversforhackers.com/c/using-ssl-certificates-with-haproxy

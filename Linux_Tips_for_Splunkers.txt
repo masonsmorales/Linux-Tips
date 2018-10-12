@@ -1,0 +1,26 @@
+# Update the splunk user's .bashrc profile with $SPLUNK_HOME (for FULL package) so that you can run "splunk <command>" without specifying the full path to splunk
+sudo su - splunk
+/bin/echo '# Permanently Set Splunk Environment Variables' >> ~/.bashrc
+/bin/echo 'export SPLUNK_HOME=/opt/splunk' >> ~/.bashrc
+/bin/echo 'export PATH=$SPLUNK_HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+
+# Grant the non-privileged splunk user permanent read access to all files in /var/log/messages
+sudo touch /etc/logrotate.d/splunk_facls
+echo "{" | sudo tee --append /etc/logrotate.d/splunk_facls
+echo "    postrotate" | sudo tee --append /etc/logrotate.d/splunk_facls
+echo "        /usr/bin/setfacl -m u:splunk:rx -R /var/log/" | sudo tee --append /etc/logrotate.d/splunk_facls
+echo "    endscript" | sudo tee --append /etc/logrotate.d/splunk_facls
+echo "}" | sudo tee --append /etc/logrotate.d/splunk_facls
+# Force the setfacl one-time immediately. It will automatically run after logrotate in the future, which ensures the splunk users will always have access.
+sudo /usr/bin/setfacl -m u:splunk:rx -R /var/log/
+
+# Create a symbolic links to Splunk
+# ln -s <real path to splunk> <path for symlink to live in>
+sudo ln -s /usr/local/splunk /opt/
+
+# See all stanza names in all inputs.conf
+find . -name inputs.conf | xargs egrep '^\['
+
+# Look for specific stanzas in inputs.conf to see which files they exist in
+find . -name inputs.conf | xargs egrep '^\[' | egrep -v 'access.log|tcp|udp|.log|.sh|aws|[Mm]on://|WinEvent|.bat|.py'
