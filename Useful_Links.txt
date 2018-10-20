@@ -11,3 +11,14 @@ https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-auth
 
 Using SSL Certificates with HAProxy
 https://serversforhackers.com/c/using-ssl-certificates-with-haproxy
+
+####### Splunk Related #######
+https://www.aditumpartners.com/reducing-security-vulnerability-around-splunk-administration/
+
+
+###### Syslog Related ######
+
+
+###### Linux Related ######
+
+###### HAproxy Related ######
