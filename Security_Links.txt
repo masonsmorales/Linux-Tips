@@ -1,0 +1,13 @@
+# CIS Benchmarks
+https://downloads.cisecurity.org/download-issues/benchmarks
+
+# Security Guides and Standards
+https://www.nsa.gov/what-we-do/cybersecurity/
+https://www.sans.org/media/critical-security-controls/critical-controls-poster-2016.pdf
+https://bettercrypto.org/
+
+# Security Automation
+https://dev-sec.io/project/
+
+# SSH Hardening
+https://stribika.github.io/2015/01/04/secure-secure-shell.html
