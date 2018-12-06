@@ -24,3 +24,6 @@ cd ~/.ssh
 vi mynewrsa.key (then paste your private key)
 chmod 0644 mynewrsa.key
 ssh-add mynewrsa.key
+
+# List all unique subdirectories two levels below /data
+ find /data/*/* -type d | sed 's/\/data\/.*\///g' | sort -u
