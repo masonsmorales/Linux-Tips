@@ -1,0 +1,11 @@
+In order to manage iptables via systemd utilities, you will need to install (if it is not already installed) the iptables-services package using the following command:
+
+yum update && yum install iptables-services
+Now, you can stop and disable firewalld using the following commands:
+
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+Next, enable iptables to both initialize on boot and start during the current session:
+
+systemctl enable iptables.service
+systemctl start iptables.service
