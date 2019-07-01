@@ -1,0 +1,14 @@
+# Given a list of IP addresses from another command, perform an nslookup and create a CSV with their corresponding hostnames
+[root@local hosts]# ls
+10.1.2.3  10.1.2.4  10.1.2.5  10.1.2.6
+[root@local hosts]# echo ip,host; for i in $(ls /syslog/hosts/); do nslookup $i | grep name | sed -e 's/.* //' | sed -e 's/\.$//'; done
+ip,host
+10.1.2.3,hosta.mydomain.com
+10.1.2.4,hostb.mydomain.com
+10.1.2.5,hostc.mydomain.com
+10.1.2.6,hostd.mydomain.com
+#============================================
+# Remove files that are present in a target directory when they have the same filename as those in the source directory (regardless of their contents)
+for f in ls /opt/splunk/etc/apps/someapp/default/data/ui/views/*.xml;  do echo rm /opt/splunk/etc/apps/someapp/local/data/ui/views/$(basename ${f}); done;
+#============================================
+
