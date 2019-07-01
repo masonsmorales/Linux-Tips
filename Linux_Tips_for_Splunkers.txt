@@ -15,7 +15,7 @@ echo "}" | sudo tee --append /etc/logrotate.d/splunk_facls
 # Force the setfacl one-time immediately. It will automatically run after logrotate in the future, which ensures the splunk users will always have access.
 sudo /usr/bin/setfacl -m u:splunk:rx -R /var/log/
 
-# Create a symbolic links to Splunk
+# Create a symbolic link to Splunk
 # ln -s <real path to splunk> <path for symlink to live in>
 sudo ln -s /usr/local/splunk /opt/
 
