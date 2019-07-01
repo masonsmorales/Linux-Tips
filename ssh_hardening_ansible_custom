@@ -1,0 +1,139 @@
+https://github.com/diodonfrost/ansible-role-ssh-hardening/blob/master/templates/sshd_config.j2
+https://github.com/mariuszczyz/centos-sshd-hardening/blob/master/tasks/main.yml
+https://github.com/lpirl/admintools/tree/master/etc
+https://wiki.centos.org/HowTos/Network/SecuringSSH
+https://stribika.github.io/2015/01/04/secure-secure-shell.html <---probably one of the better guides
+
+ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+
+https://unix.stackexchange.com/questions/333728/ssh-how-to-disable-weak-ciphers
+https://www.linuxjournal.com/content/cipher-security-how-harden-tls-and-ssh
+https://medium.com/@jasonrigden/hardening-ssh-1bcb99cd4cef <---most comprehensive and up to date!!
+https://www.ssh.com/ssh/sshd_config/ *** also good
+https://www.cyberciti.biz/tips/linux-unix-bsd-openssh-server-best-practices.html ***
+https://www.sshguard.net/ maybe use it??
+
+https://www.cyberciti.biz/faq/linux-unix-login-bash-shell-force-time-outs/ bash auto logouit
+
+SSLProtocol ALL -SSLv2 -SSLv3
+SSLHonorCipherOrder On
+SSLCipherSuite
+ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+
+↪AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:
+↪RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
+===================
+sudo systemctl reload sshd
+Recommended /etc/ssh/sshd_config snippet:
+(remove existing HostKey entries)
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+Protocol 2
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+PermitRootLogin no
+DenyUsers splunk
+
+Recommended /etc/ssh/ssh_config snippet:
+Host *
+    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+
+
+Recommended /etc/ssh/ssh_config snippet:
+Host *
+   UseRoaming no
+
+   5. Disable Empty Passwords
+   You need to explicitly disallow remote login from accounts with empty passwords, update sshd_config with the following line:
+   PermitEmptyPasswords no
+
+   disallow splunk user
+
+   ClientAliveInterval 28800
+   ClientAliveCountMax 0
+IgnoreRhosts yes
+
+# LogLevel VERBOSE logs user's key fingerprint on login. Needed to have a clear audit track of which key was using to log in.
+LogLevel VERBOSE
+
+# Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
+Subsystem sftp  /usr/lib/ssh/sftp-server -f AUTHPRIV -l INFO
+
+
+
+# Supported HostKey algorithms by order of preference.
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+
+# Specifies the available KEX (Key Exchange) algorithms.
+KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+
+# Specifies the ciphers allowed
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+
+#Specifies the available MAC (message authentication code) algorithms
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+
+
+
+   - name: Ensure that OpenSSH latest version is installed
+     package:
+       name: "{{ openssh_server_name[ansible_os_family] }}"
+       state: latest
+       update_cache: true
+     become: yes
+
+   - name: Disable X11 Forwarding
+     lineinfile:
+       path: /etc/ssh/sshd_config
+       line: "X11Forwarding no"
+       regexp: "^X11Forwarding"
+       state: present
+     notify: restart sshd
+     become: yes
+
+   - name: Disable root SSH login
+     lineinfile:
+       path: /etc/ssh/sshd_config
+       line: "PermitRootLogin no"
+       regexp: "^PermitRootLogin"
+       state: present
+     notify: restart sshd
+     become: yes
+
+   - name: Enable SSH2 only
+     lineinfile:
+       path: /etc/ssh/sshd_config
+       line: "Protocol 2"
+       regexp: "^Protocol"
+       state: present
+     notify: restart sshd
+     become: yes
+
+   - name: Configure secure ciphers
+     lineinfile:
+       path: /etc/ssh/sshd_config
+       line: "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
+       regexp: "^Ciphers"
+       state: present
+     notify: restart sshd
+     become: yes
+
+   - name: Configure secure MACs
+     lineinfile:
+       path: /etc/ssh/sshd_config
+       line: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com"
+       regexp: "^MACs"
+       state: present
+     notify: restart sshd
+     become: yes
+
+   - name: Configure secure key exchange algorithms
+     lineinfile:
+       path: /etc/ssh/sshd_config
+       line: "curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
+       regexp: "^KexAlgorithms"
+       state: present
+     notify: restart sshd
+     become: yes
