@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Generic script to replace strings in a list of files/filename patterns using find and sed
 # Author: Mason Morales
-# Note: files.txt should be a list of filenames with a line break after each file
+# Note: update_files.txt should be a list of filenames with a line break after each filename/pattern
 file="$(cat update_files.txt)"
 
-original="index=test"
-replacement="index=_internal"
+original="index=foo"
+replacement="index=bar"
 
 echo "=========== Script Started ==========="
 echo "Beginning string replacement for all files listed in $file"
