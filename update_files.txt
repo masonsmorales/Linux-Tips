@@ -1,3 +1,0 @@
-savedsearches.conf
-macros.conf 
-*.xml
